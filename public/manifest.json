@@ -1,0 +1,21 @@
+{
+  "name": "Orbit 369 Media",
+  "short_name": "Orbit 369",
+  "description": "A boutique digital media agency that works quietly and precisely so its clients shine.",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#07080B",
+  "theme_color": "#07080B",
+  "icons": [
+    {
+      "src": "/icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "/icon-256.png",
+      "sizes": "256x256",
+      "type": "image/png"
+    }
+  ]
+}
