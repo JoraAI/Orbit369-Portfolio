@@ -67,7 +67,7 @@ All copy and data live in `lib/data/` so non-developers can edit without touchin
 This is a real but early-stage startup site. The following are **fictional placeholders** and must be swapped for real content before going live:
 
 ### Contact Details (`lib/data/site.ts`)
-- **Email:** `hello@orbit369media.com` — replace with the real inbox
+- **Email:** `orbit369media@gmail.com`
 - **Phone:** `+91 00000 00000` — replace with the real number
 - **Social links** — LinkedIn / Instagram / X / Behance URLs are placeholders
 
@@ -93,9 +93,9 @@ This is a real but early-stage startup site. The following are **fictional place
 - The photo slot is a gradient silhouette placeholder
 
 ### Contact Form Backend (`app/api/contact/route.ts`)
-- Currently `console.log`s submissions and returns success
-- **Wire up a real provider** (Resend, SendGrid, ConvertKit, a CRM webhook) before launch
-- Recommended env vars: `RESEND_API_KEY`, `CONTACT_TO_EMAIL`
+- Wired to **Resend** — submissions are emailed to `orbit369media@gmail.com`
+- Until `RESEND_API_KEY` is set, submissions are logged to the server console and success is returned
+- Env vars (see `.env.example`): `RESEND_API_KEY`, `CONTACT_TO_EMAIL`, `CONTACT_FROM_EMAIL`
 
 ### Newsletter (`components/widgets/NewsletterCapture.tsx`)
 - Currently `console.log`s the email
@@ -104,6 +104,30 @@ This is a real but early-stage startup site. The following are **fictional place
 ### Chat Widget (`components/widgets/ChatWidget.tsx`)
 - UI-only — opens a static panel with a canned message
 - **Wire up a real provider** (Intercom, Crisp, Tawk.to) before launch
+
+---
+
+## Sending Contact Form Emails (Resend)
+
+The contact form at `/contact` posts to `app/api/contact/route.ts`, which delivers submissions to `orbit369media@gmail.com` via [Resend](https://resend.com). One-time setup:
+
+1. **Create a Resend account** — sign up at <https://resend.com> (any email works).
+2. **Verify your sending domain** (skip if already done — `orbit369media.com` shows as "Verified" in Resend) — go to **Domains → Add Domain** and enter `orbit369media.com`. Resend lists three DNS records (SPF, DKIM, and return-path). Add them at your DNS provider (Cloudflare, GoDaddy, Namecheap, etc.); verification happens automatically once the records propagate.
+3. **Create an API key** — go to **API Keys → Create API Key**, name it (e.g. `portfolio-contact`), and copy the `re_...` value.
+4. **Add env vars** — copy `.env.example` to `.env.local` and fill in:
+
+   ```bash
+   RESEND_API_KEY=re_xxxxxxxxxxxx
+   CONTACT_TO_EMAIL=orbit369media@gmail.com
+   CONTACT_FROM_EMAIL=hello@orbit369media.com   # any address on your verified domain — no real mailbox needed
+   ```
+
+5. **Restart the dev server** — `npm run dev` reads env vars at startup.
+6. **Test** — submit the contact form; the email lands in the Gmail inbox. If it doesn't arrive, check the delivery log at <https://resend.com/emails>.
+
+> **Do I need a real `hello@orbit369media.com` mailbox?** No. The `From` address is just the sender label shown on the email. Because `orbit369media.com` is verified in Resend, *any* address on it (`hello@`, `contact@`, `no-reply@`, …) can be used as the sender without creating a real mailbox. The email is **delivered to** `CONTACT_TO_EMAIL` (`orbit369media@gmail.com`) — that's the only inbox involved. (Resend's sandbox sender `onboarding@resend.dev` only delivers to the email you signed up with, which is why a verified domain is the right setup here.)
+
+Until `RESEND_API_KEY` is set, the route logs submissions to the server console and still returns success, so local development never breaks.
 
 ---
 

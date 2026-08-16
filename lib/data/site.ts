@@ -6,8 +6,7 @@ export const siteConfig = {
   description:
     'Orbit 369 Media is a boutique digital media agency working quietly and precisely behind the scenes so its clients shine in front of theirs. Brand, web, content, and growth — steady, gravitational, always circling back to deliver.',
   url: 'https://orbit369media.com',
-  // Placeholder contact details — swap before launch (see README)
-  email: 'hello@orbit369media.com',
+  email: 'orbit369media@gmail.com',
   headquarters: 'Rajahmundry, Andhra Pradesh, India',
   headquartersShort: 'Rajahmundry, AP, India',
   servingNote: 'Our team works remotely and serves clients across the globe.',
